@@ -1,7 +1,0 @@
-# Copy this to ~/.config/chezmoi/chezmoi.toml on each machine.
-# Do not commit the local file: it is allowed to contain per-machine data.
-mode = "symlink"
-
-[data]
-# Add non-sensitive per-machine values here for use by *.tmpl files.
-# workstation_name = "personal-laptop"

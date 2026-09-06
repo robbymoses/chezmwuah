@@ -1,5 +1,5 @@
 # Repository documentation is not part of the desired home-directory state.
-README.md
+**/README.md
 docs/**
 
 # Hyprland is useful only on Linux.
