@@ -1,0 +1,20 @@
+# Eldritch Cthulhu color palette for Starship
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+palette = 'eldritch_cthulhu'
+
+[palettes.eldritch_cthulhu]
+background  = "#212337" # Sunken Depths Grey
+currentline = "#323449" # Shallow Depths Grey
+surface     = "#454759" # Tidal Surface
+overlay     = "#5b5c66" # Murk Overlay
+foreground  = "#ebfafa" # Lighthouse White
+comment     = "#7081d0" # The Old One Purple
+cyan        = "#04d1f9" # Watery Tomb Blue
+green       = "#37f499" # Great Old One Green
+orange      = "#f7c67f" # Dreaming Orange
+pink        = "#f265b5" # Pustule Pink
+purple      = "#a48cf2" # Lovecraft Purple
+red         = "#f16c75" # R'lyeh' Red
+yellow      = "#f1fc79" # Gold of Yuggoth

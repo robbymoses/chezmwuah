@@ -1,0 +1,55 @@
+# Container management functions for ASUS Duo
+# These provide additional helper functions for client containers
+
+# List all available containers
+container-list() {
+  echo "Available client containers:"
+  for container in /etc/nixos-containers/*.json; do
+    if [ -f "$container" ]; then
+      name=$(basename "$container" .json)
+      echo "  - $name"
+    fi
+  done
+}
+
+# Show container info
+container-info() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    echo "Usage: container-info <container-name>"
+    return 1
+  fi
+  sudo nixos-container show-status "$name"
+}
+
+# Restart a container
+container-restart() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    echo "Usage: container-restart <container-name>"
+    return 1
+  fi
+  sudo nixos-container stop "$name" && sudo nixos-container start "$name"
+}
+
+# Execute command in container with output
+container-run-verbose() {
+  local name="$1"
+  shift
+  if [ -z "$name" ]; then
+    echo "Usage: container-run-verbose <container-name> <command>"
+    return 1
+  fi
+  sudo nixos-container run "$name" -- su -l work -c "$*"
+}
+
+# Update container packages
+container-update() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    echo "Usage: container-update <container-name>"
+    return 1
+  fi
+  echo "Updating packages in container '$name'..."
+  sudo nixos-container run "$name" -- su -l work -c "nix-channel --update && nix-env -u '*'"
+}

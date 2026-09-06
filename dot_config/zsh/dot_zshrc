@@ -1,0 +1,47 @@
+# Zsh configuration
+# ZDOTDIR is set by ~/.zshenv before this file is loaded.
+
+# Enable completion and autosuggestions
+autoload -U compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+setopt MENU_COMPLETE
+setopt AUTO_MENU
+
+# History settings
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=$ZDOTDIR/.zsh_history
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+
+# Better cd
+setopt AUTO_CD
+cdpath=(. ~)
+
+# Key bindings
+bindkey -e
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Load optional local helpers. The (N) qualifier makes an empty glob harmless,
+# which matters on macOS where the Linux-only helpers are not installed.
+for alias_file in "$ZDOTDIR"/*.aliases(N); do
+  source "$alias_file"
+done
+
+for func_file in "$ZDOTDIR"/*.functions(N); do
+  source "$func_file"
+done
+
+# Plugins and prompt are optional so a fresh machine still gets a usable shell.
+if [[ -r "$ZDOTDIR/lib/antidote.zsh" ]]; then
+  source "$ZDOTDIR/lib/antidote.zsh"
+fi
+
+typeset -U fpath path
+
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi

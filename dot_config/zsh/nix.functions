@@ -1,0 +1,27 @@
+# Rebuild the NixOS configuration represented by the current Git repository.
+# Run this from anywhere inside the configuration checkout.
+rebuild() {
+  local root host untracked
+
+  host="$(hostname)"
+  root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+    print -u2 "rebuild: not inside a Git repository"
+    return 1
+  }
+
+  untracked="$(git -C "$root" ls-files --others --exclude-standard)"
+  if [[ -n "$untracked" ]]; then
+    print -u2 "rebuild: untracked files are excluded from this Git-backed flake:"
+    print -u2 -l -- "${(@f)untracked}"
+    print -u2 "rebuild: stage the required files with: git -C $root add <path>"
+    return 1
+  fi
+
+  nix eval --impure --raw "$root#nixosConfigurations.${host}.config.networking.hostName" \
+    --no-write-lock-file --accept-flake-config >/dev/null 2>&1 || {
+      print -u2 "rebuild: $root is not a NixOS flake with nixosConfigurations.${host}"
+      return 1
+    }
+
+  sudo nixos-rebuild switch --impure --accept-flake-config --flake "$root#$host"
+}

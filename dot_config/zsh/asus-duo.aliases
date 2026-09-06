@@ -1,0 +1,30 @@
+# NixOS system rebuild shortcuts for ASUS Duo
+# NIX_CONFIG is a reserved Nix env var (extra nix.conf), so use NIX_FLAKE.
+# `path:` fetcher is required so gitignored client-containers/*-client.nix load.
+export NIX_FLAKE="$HOME/blueprint"
+alias sys-rb='sudo nixos-rebuild test   --flake "path:${NIX_FLAKE}#asus-duo"'
+alias sys-sw='sudo nixos-rebuild switch --flake "path:${NIX_FLAKE}#asus-duo"'
+
+# Container management aliases for ASUS Duo
+# These provide quick shortcuts for managing client containers
+
+# Start/stop/status aliases
+alias cs='container-start'
+alias cstop='container-stop'  
+alias cstatus='container-status'
+
+# Shell access aliases
+alias csh='container-shell'
+alias crsh='container-rootshell'
+
+# Command execution aliases
+alias crun='container-run'
+alias capp='container-app'
+
+# Evereve-specific shortcuts
+alias evereve-start='container-start evereve'
+alias evereve-stop='container-stop evereve'
+alias evereve-status='container-status evereve'
+alias evereve-shell='container-shell evereve'
+alias evereve-firefox='container-app evereve firefox'
+alias evereve-dbeaver='container-app evereve dbeaver-bin'

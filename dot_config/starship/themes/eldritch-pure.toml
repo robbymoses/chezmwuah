@@ -1,0 +1,83 @@
+# A complete theme inspired by the Pure prompt, ported from Starship's official Pure preset
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Sets user-defined palette
+palette = 'eldritch_cthulhu'
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
+
+[directory]
+style = "primary"
+
+[character]
+success_symbol = "[❯](quaternary)"
+error_symbol = "[❯](tertiary)"
+vimcmd_symbol = "[❮](secondary)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "quinary"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](septenary) ($ahead_behind$stashed)]($style)"
+style = "primary"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "quinary"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "senary"
+
+[python]
+format = "[$virtualenv]($style) "
+style = "quinary"
+detect_extensions = []
+detect_files = []
+
+# Palette definitions
+[palettes.eldritch_cthulhu]
+primary = "#04d1f9"    # cyan
+secondary = "#a48cf2"  # purple
+tertiary = "#f16c75"   # red
+quaternary = "#37f499" # green
+quinary = "#7081d0"    # comment
+senary = "#f1fc79"     # yellow
+septenary = "#f265b5"  # pink
+
+[palettes.eldritch_abyss]
+primary = "#0396b3"    # cyan
+secondary = "#8b75d9"  # purple
+tertiary = "#cc5860"   # red
+quaternary = "#2dcc82" # green
+quinary = "#506299"    # comment
+senary = "#ccd663"     # yellow
+septenary = "#d154a1"  # pink
+
+[palettes.eldritch_dusk]
+primary = "#5b73dc"    # comment
+secondary = "#8a69f7"  # purple
+tertiary = "#fb5b66"   # red
+quaternary = "#8a69f7" # purple
+quinary = "#5b73dc"    # comment
+senary = "#ffaf4d"     # orange
+septenary = "#fb5bb6"  # pink

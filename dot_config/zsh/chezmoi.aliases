@@ -1,0 +1,4 @@
+# Dotfiles repository helpers. Keep $HOME unexpanded so this file stays a
+# portable symlink rather than a rendered chezmoi template.
+alias chzm='cd "$HOME/.local/share/chezmoi"'
+alias chzm-a='chezmoi apply'

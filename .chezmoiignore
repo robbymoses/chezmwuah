@@ -1,0 +1,18 @@
+# Repository documentation is not part of the desired home-directory state.
+README.md
+docs/**
+
+# Hyprland is useful only on Linux.
+{{ if ne .chezmoi.os "linux" }}
+.config/hypr/**
+{{ end }}
+
+# These helpers describe physical ASUS Duo hardware and are only enabled on
+# the machine named "asus-duo". Rename this value if the machine's hostname
+# changes; check it with `hostname`.
+{{ if ne .chezmoi.hostname "asus-duo" }}
+.config/zsh/asus-duo.aliases
+.config/zsh/asus-duo.functions
+.config/zsh/screenpad.aliases
+.config/zsh/screenpad.functions
+{{ end }}

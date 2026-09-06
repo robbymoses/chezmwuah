@@ -1,0 +1,36 @@
+# Host-specific functions for ASUS Duo
+# Screen management functions
+
+# Toggle ScreenPad Plus status
+toggle-screepad() {
+  local status=$(hyprctl monitors | grep -A 5 "eDP-2" | grep "disabled")
+  if [[ -n "$status" ]]; then
+    echo "Enabling ScreenPad Plus..."
+    hyprctl keyword monitor eDP-2,enable
+  else
+    echo "Disabling ScreenPad Plus..."
+    hyprctl keyword monitor eDP-2,disable
+  fi
+}
+
+# Set ScreenPad Plus position (relative to main screen)
+# Usage: set-screepad-position below|above|left|right
+set-screepad-position() {
+  case "$1" in
+    below)
+      hyprctl keyword monitor eDP-2,auto,1,transform,0
+      ;;
+    above)
+      hyprctl keyword monitor eDP-2,auto,1,transform,3
+      ;;
+    left)
+      hyprctl keyword monitor eDP-2,auto,1,transform,1
+      ;;
+    right)
+      hyprctl keyword monitor eDP-2,auto,1,transform,2
+      ;;
+    *)
+      echo "Usage: set-screepad-position below|above|left|right"
+      ;;
+  esac
+}

@@ -1,0 +1,14 @@
+# Host-specific aliases for ASUS Duo
+# Screen management aliases
+
+# Disable ScreenPad Plus (eDP-2)
+alias disable-screepad="hyprctl keyword monitor eDP-2,disable"
+
+# Enable ScreenPad Plus (eDP-2) 
+alias enable-screepad="hyprctl keyword monitor eDP-2,enable"
+
+# List all monitors with status
+alias list-monitors="hyprctl monitors"
+
+# Get current monitor configuration
+alias get-monitor-config="hyprctl monitors"

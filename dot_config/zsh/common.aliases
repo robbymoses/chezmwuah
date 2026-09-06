@@ -1,0 +1,4 @@
+# Navigation helpers shared by every machine.
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
