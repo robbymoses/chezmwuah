@@ -1,84 +1,181 @@
 # Dotfiles
 
-Personal [chezmoi](https://www.chezmoi.io/) source repository for shell,
-terminal, prompt, and desktop configuration. It is intended to remain private.
+Personal [chezmoi](https://www.chezmoi.io/) source state for a Zsh-based
+terminal environment and a Linux [Hyprland](https://hypr.land/) desktop. This
+repository is private and uses chezmoi's `symlink` mode: managed, non-template
+files in the home directory point back to this checkout.
 
-This repository uses chezmoi's `symlink` mode: ordinary managed files are
-symlinked from the checkout, so edits made here take effect immediately after
-the affected application or shell is reloaded. Chezmoi templates are the
-exception; they are rendered to regular files when `chezmoi apply` runs.
+That means changes to an ordinary source file are live immediately; reload the
+shell or affected application to use them. Templates, if added, are rendered
+as regular files when `chezmoi apply` runs.
 
-## Included configuration
+## Included applications
 
-* Zsh environment and configuration, including shared navigation, chezmoi, and
-  Nix helpers.
-* Ghostty with the Eldritch theme.
-* Starship with Eldritch prompt themes.
-* Hyprland configuration on Linux.
-* ASUS Duo container and ScreenPad helpers only on the `asus-duo` host.
+| Application | Managed target | Source format | Notes |
+| --- | --- | --- | --- |
+| [Zsh](https://www.zsh.org/) | `~/.zshenv`, `~/.config/zsh/` | shell | Sets XDG paths, loads aliases/functions, completion, and optional plugins. |
+| [Starship](https://starship.rs/) | `~/.config/starship/starship.toml` | TOML | Eldritch-colored prompt initialized automatically when `starship` is installed. |
+| [Ghostty](https://ghostty.org/) | `~/.config/ghostty/` | Ghostty config | Selects the local `Eldritch` terminal theme. |
+| [Hyprland](https://wiki.hypr.land/) | `~/.config/hypr/hyprland.lua` | Lua | Linux-only compositor settings, bindings, and laptop controls. |
+| [NixOS](https://nixos.org/) | Zsh helper only | shell | Provides rebuild and ASUS Duo container shortcuts; it does not manage a NixOS system configuration. |
 
-## Layout
+Several prompt glyphs expect a [Nerd Font](https://www.nerdfonts.com/). The
+Hyprland configuration invokes `kitty`, `dolphin`, `noctalia`, `wpctl`,
+`brightnessctl`, and `playerctl`; install or replace those commands to suit the
+machine.
 
-* `dot_config/` installs to `~/.config/`.
-* `dot_zshenv` installs to `~/.zshenv`, which sets `ZDOTDIR` to
-  `~/.config/zsh`.
-* `.chezmoitemplates/` contains reusable template fragments; it is not
-  installed itself.
-* `docs/` contains repository documentation and is not installed.
+## Repository layout
 
-Chezmoi source names are deliberate: a `dot_` prefix becomes `.` in the target
-path. For example, `dot_config/ghostty/config.ghostty` becomes
-`~/.config/ghostty/config.ghostty`.
+```text
+.
+├── dot_zshenv                         -> ~/.zshenv
+├── dot_config/                        -> ~/.config/
+│   ├── zsh/
+│   │   ├── dot_zshrc                  -> ~/.config/zsh/.zshrc
+│   │   ├── *.aliases                  # shell aliases loaded automatically
+│   │   └── *.functions                # shell functions loaded automatically
+│   ├── starship/
+│   │   ├── starship.toml              # active prompt configuration
+│   │   └── themes/                    # alternative Eldritch TOML themes
+│   ├── ghostty/
+│   │   ├── config.ghostty             # selects the Eldritch theme
+│   │   └── themes/Eldritch            # local Ghostty theme definition
+│   └── hypr/hyprland.lua              # Linux-only Hyprland configuration
+├── .chezmoitemplates/                 # reusable template fragments; never installed
+├── .chezmoiignore                     # OS- and hostname-dependent exclusions
+└── docs/chezmoi.toml.example          # local chezmoi configuration example
+```
 
-## Set up a new machine
+Chezmoi source names encode their destination: `dot_` becomes `.`. For
+example, `dot_config/ghostty/config.ghostty` installs as
+`~/.config/ghostty/config.ghostty`, and `dot_config/zsh/dot_zshrc` installs as
+`~/.config/zsh/.zshrc`.
 
-Install chezmoi with the system package manager, ensure your SSH key has
-access to this private repository, then clone it to chezmoi's default source
-directory:
+## Install on a new machine
+
+Install [chezmoi](https://www.chezmoi.io/install/) with the system package
+manager, ensure the machine's SSH key can read this private repository, then
+clone it into chezmoi's default source directory:
 
 ```sh
 git clone git@github.com:robbymoses/chezmwuah.git ~/.local/share/chezmoi
 ```
 
-Create `~/.config/chezmoi/chezmoi.toml` with:
+Create `~/.config/chezmoi/chezmoi.toml` with the following local setting:
 
 ```toml
 mode = "symlink"
 ```
 
-The default source directory is `~/.local/share/chezmoi`; if you choose a
-different checkout location, set its absolute path as `sourceDir` in that same
-local configuration file. See
-[`docs/chezmoi.toml.example`](docs/chezmoi.toml.example) for a starting point
-that also accommodates non-sensitive per-machine template data.
+[`docs/chezmoi.toml.example`](docs/chezmoi.toml.example) includes the same
+setting and a place for non-sensitive per-machine template data. If the source
+checkout is somewhere else, set its absolute path with `sourceDir` in that
+local file.
 
-Preview and install the desired state:
+Preview, then apply the desired state:
 
 ```sh
 chezmoi apply --dry-run --verbose
 chezmoi apply
 ```
 
-Before applying later changes, run `chezmoi diff`. For ordinary non-template
-files, edit the source file in this checkout and reload the relevant program;
-there is no need to re-apply it.
+For later updates, edit this repository and use `chezmoi diff` to inspect the
+desired changes before applying. Reload Zsh (`exec zsh`) or restart the desktop
+application after modifying its configuration.
 
-## Platform and host conditions
+## Shell configuration
 
-`.chezmoiignore` is a chezmoi template. Hyprland files are installed only on
-Linux. ASUS Duo and ScreenPad helper files are installed only when the hostname
-is `asus-duo`; update that value in `.chezmoiignore` if the machine is renamed.
+`~/.zshenv` sets `ZDOTDIR=$HOME/.config/zsh` and the standard XDG data, cache,
+and configuration directories. Zsh then reads `~/.config/zsh/.zshrc`.
 
-Use `{{ .chezmoi.homeDir }}` only in a `*.tmpl` file when a configuration needs
-the literal home path. Prefer `$HOME` or `${HOME}` in shell-compatible files so
-they can remain symlinks.
+The `.zshrc` enables completion and history sharing, uses Emacs-style key
+bindings, and sources every `*.aliases` and `*.functions` file in its
+directory. Missing optional files are harmless, which keeps the configuration
+portable across macOS and Linux. It initializes [Starship](https://starship.rs/)
+only when the executable is present, and loads Antidote only when
+`~/.config/zsh/lib/antidote.zsh` exists.
+
+| File | Scope | Provides |
+| --- | --- | --- |
+| `common.aliases` | all hosts | `..`, `...`, and `....` navigation aliases |
+| `chezmoi.aliases` | all hosts | `chzm` (open source checkout) and `chzm-a` (`chezmoi apply`) |
+| `nix.functions` | all hosts | `rebuild`, which validates the current Git-backed NixOS flake before switching to the current hostname |
+| `asus-duo.aliases` | `asus-duo` only | NixOS rebuild and client-container aliases, including Evereve shortcuts |
+| `asus-duo.functions` | `asus-duo` only | container listing, status, restart, command execution, and update functions |
+| `screenpad.aliases` / `screenpad.functions` | `asus-duo` only | enable, disable, toggle, inspect, and reposition the `eDP-2` ScreenPad |
+
+The ASUS Duo rebuild aliases expect a flake at `$HOME/blueprint`. The generic
+`rebuild` function instead operates on the Git repository containing the
+current directory and refuses to run while required flake files are untracked.
+
+## Terminal and prompt
+
+Ghostty uses the local `Eldritch` theme. Its palette is also the basis for the
+active Starship configuration, which shows directory, user and hostname, Git
+state, common language/runtime versions, containers, package version, command
+duration, and time.
+
+Alternative complete Starship themes live under
+`dot_config/starship/themes/`:
+
+| File | Style |
+| --- | --- |
+| `colors.toml` | shared Eldritch color palette |
+| `eldritch-spaceship.toml` | icon-rich, two-line Spaceship-style prompt |
+| `eldritch-pure.toml` | minimal Pure-inspired prompt |
+| `eldritch-powerline.toml` | segmented Powerline-style prompt |
+
+`starship.toml` is the active file. Treat the files under `themes/` as source
+examples for a deliberate configuration change; do not edit the generated
+home-directory path independently in symlink mode.
+
+## Hyprland configuration
+
+`hyprland.lua` is installed only on Linux. It configures `eDP-1` as the primary
+display and defines `eDP-2` (the ASUS Duo ScreenPad Plus) disabled by default.
+It starts Noctalia, uses the dwindle layout, enables animations and blur, and
+defines keyboard, pointer, gesture, multimedia, and window rules.
+
+| Binding | Action |
+| --- | --- |
+| `Super + Q` | open terminal (`kitty`) |
+| `Super + C` | close active window |
+| `Super + E` | open file manager (`dolphin`) |
+| `Super + Space` | toggle Noctalia launcher |
+| `Super + V` | toggle active window floating |
+| `Super + P` | toggle pseudo-tiled mode |
+| `Super + J` | toggle dwindle split |
+| `Super + Arrow` | move focus |
+| `Super + 0–9` | select workspace 10 or 1–9 |
+| `Super + Shift + 0–9` | move active window to workspace 10 or 1–9 |
+| `Super + S` / `Super + Shift + S` | toggle / move window to the `magic` special workspace |
+| `Super + mouse wheel` | move through workspaces |
+| `Super + left/right mouse drag` | move / resize a window |
+
+The media keys control PipeWire volume through `wpctl`, brightness through
+`brightnessctl`, and playback through `playerctl`. Three-finger horizontal
+swipes change workspaces.
+
+## Platform, host, and template rules
+
+`.chezmoiignore` is a chezmoi template that controls what is installed:
+
+| Condition | Excluded files |
+| --- | --- |
+| non-Linux | `.config/hypr/**` |
+| hostname is not `asus-duo` | ASUS Duo and ScreenPad Zsh aliases/functions |
+| every host | repository `README.md` and `docs/**` |
+
+If the ASUS laptop hostname changes, update `asus-duo` in `.chezmoiignore`.
+Check the current name with `hostname`.
+
+Use `{{ .chezmoi.homeDir }}` only in `*.tmpl` files that need a rendered,
+literal home path. Prefer `$HOME` or `${HOME}` in shell-compatible files so
+they remain portable symlinks.
 
 ## Sensitive data
 
-This private repository can hold personal aliases and machine-specific
-configuration, but never passwords, API tokens, private keys, or recovery
-codes. Keep secrets in a password manager or untracked local files.
-
-If a configuration becomes reusable, publish a reviewed and sanitized copy in
-a separate repository rather than mirroring this one. Public Git history is
-difficult to retract.
+Do not commit passwords, API tokens, private keys, recovery codes, or other
+secrets. Keep them in a password manager or untracked local files. Reusable
+configuration should be reviewed and sanitized before being published in a
+separate repository; public Git history is difficult to retract.
