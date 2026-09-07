@@ -1,0 +1,63 @@
+# Noctalia is started by Hyprland. Most edits hot-reload automatically.
+#
+# Keep durable, hand-written preferences here. Settings changed in Noctalia's
+# GUI are stored separately in ~/.local/state/noctalia/settings.toml and take
+# precedence over this file.
+
+[shell.panel]
+open_near_click_control_center = true
+
+[bar.main]
+position = "top"
+thickness = 34
+
+# A compact floating bar that still reserves space for tiled windows.
+background_opacity = 0.92
+radius = 12
+margin_ends = 20
+margin_edge = 10
+padding = 12
+widget_spacing = 6
+shadow = true
+reserve_space = true
+
+start = [
+    "clock",
+    "_pipe",
+    "volume",
+    "_pipe",
+    "bluetooth",
+    "_pipe",
+    "audio_visualizer",
+]
+center = ["workspaces"]
+end = [
+    "network",
+    "_pipe",
+    "brightness",
+    "_pipe",
+    "battery",
+    "_pipe",
+    "control-center",
+    "notifications",
+    "session",
+]
+
+[widget.audio_visualizer]
+scale = 0.75
+show_when_idle = true
+
+[widget.audio_visualizer.actions]
+left = "panel-toggle control-center media"
+
+[widget._pipe]
+type = "text"
+text = "|"
+
+[widget.network]
+show_label = false
+
+[widget.battery]
+display_mode = "glyph"
+show_label = true
+label_content = "percent"

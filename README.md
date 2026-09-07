@@ -16,6 +16,7 @@ they describe. Documentation is excluded from the desired home-directory state.
 | Starship | `~/.config/starship/` | [`dot_config/starship`](dot_config/starship/README.md) |
 | Ghostty | `~/.config/ghostty/` | [`dot_config/ghostty`](dot_config/ghostty/README.md) |
 | Hyprland | `~/.config/hypr/hyprland.lua` | [`dot_config/hypr`](dot_config/hypr/README.md) |
+| Noctalia | `~/.config/noctalia/config.toml` | [`dot_config/noctalia`](dot_config/noctalia/README.md) |
 | Chezmoi setup and templates | local configuration only | [`docs`](docs/README.md), [`.chezmoitemplates`](.chezmoitemplates/README.md) |
 
 [`dot_config/README.md`](dot_config/README.md) describes the shared
@@ -56,7 +57,7 @@ private keys, recovery codes, or other secrets.
 
 ## Platform and host rules
 
-`.chezmoiignore` excludes Hyprland on non-Linux systems and excludes the ASUS
-Duo and ScreenPad helpers unless the hostname is `asus-duo`. Rename that value
-if the laptop hostname changes. Repository documentation is excluded on every
-host.
+`.chezmoiignore` excludes Hyprland and Noctalia on non-Linux systems and
+excludes the ASUS Duo and ScreenPad helpers unless the hostname is `asus-duo`.
+Rename that value if the laptop hostname changes. Repository documentation is
+excluded on every host.

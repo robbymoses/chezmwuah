@@ -4,6 +4,8 @@
 Linux. It uses the dwindle layout, starts Noctalia, configures `eDP-1` as the
 primary display, and leaves the ASUS Duo `eDP-2` ScreenPad disabled by default.
 The ScreenPad helpers are described in the [Zsh documentation](../zsh/README.md).
+The Noctalia bar configuration is documented in
+[its own directory](../noctalia/README.md).
 
 Required commands include `kitty`, `dolphin`, `noctalia`, `wpctl`,
 `brightnessctl`, and `playerctl`; replace any of these in the Lua configuration

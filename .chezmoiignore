@@ -2,9 +2,10 @@
 **/README.md
 docs/**
 
-# Hyprland is useful only on Linux.
+# Hyprland and its Noctalia shell are useful only on Linux.
 {{ if ne .chezmoi.os "linux" }}
 .config/hypr/**
+.config/noctalia/**
 {{ end }}
 
 # These helpers describe physical ASUS Duo hardware and are only enabled on
