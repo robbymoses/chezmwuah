@@ -2,8 +2,9 @@
 **/README.md
 docs/**
 
-# Hyprland and its Noctalia shell are useful only on Linux.
-{{ if ne .chezmoi.os "linux" }}
+# Hyprland and its Noctalia shell require a Linux machine whose local chezmoi
+# profile selects the Hyprland desktop session.
+{{ if or (ne .chezmoi.os "linux") (ne .profile.desktop "hyprland") }}
 .config/hypr/**
 .config/noctalia/**
 {{ end }}

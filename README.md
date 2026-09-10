@@ -17,7 +17,7 @@ they describe. Documentation is excluded from the desired home-directory state.
 | Ghostty | `~/.config/ghostty/` | [`dot_config/ghostty`](dot_config/ghostty/README.md) |
 | Hyprland | `~/.config/hypr/hyprland.lua` | [`dot_config/hypr`](dot_config/hypr/README.md) |
 | Noctalia | `~/.config/noctalia/config.toml` | [`dot_config/noctalia`](dot_config/noctalia/README.md) |
-| Chezmoi setup and templates | local configuration only | [`docs`](docs/README.md), [`.chezmoitemplates`](.chezmoitemplates/README.md) |
+| Chezmoi setup and templates | local configuration only | [profile bootstrap](.chezmoi.toml.tmpl), [template fragments](.chezmoitemplates/README.md) |
 
 [`dot_config/README.md`](dot_config/README.md) describes the shared
 `~/.config` source layout. In particular, the Zsh document owns the explanation
@@ -27,23 +27,27 @@ configuration in `~/.config/zsh/`.
 ## Install on a new machine
 
 Install [chezmoi](https://www.chezmoi.io/install/), ensure the machine's SSH
-key can read this private repository, then clone it into chezmoi's default
-source directory:
+key can read this private repository, then initialize it:
 
 ```sh
-git clone git@github.com:robbymoses/chezmwuah.git ~/.local/share/chezmoi
+chezmoi init --ssh robbymoses/chezmwuah
 ```
 
-Create `~/.config/chezmoi/chezmoi.toml` with:
+Initialization prompts for the machine role, preferred coding agent, and
+desktop session. It generates `~/.config/chezmoi/chezmoi.toml` locally:
 
 ```toml
 mode = "symlink"
+
+[data.profile]
+role = "host"
+agent = "codex"
+desktop = "hyprland"
 ```
 
-[`docs/chezmoi.toml.example`](docs/chezmoi.toml.example) provides the same
-setting plus a place for non-sensitive per-machine template data. If the source
-checkout lives elsewhere, set its absolute path with `sourceDir` in that local
-file.
+The generated file is local machine configuration, not source state, and is
+therefore not committed with this repository. Edit it to change a profile, then
+preview the resulting target state before applying it.
 
 Preview and apply the desired state:
 
@@ -57,7 +61,7 @@ private keys, recovery codes, or other secrets.
 
 ## Platform and host rules
 
-`.chezmoiignore` excludes Hyprland and Noctalia on non-Linux systems and
-excludes the ASUS Duo and ScreenPad helpers unless the hostname is `asus-duo`.
-Rename that value if the laptop hostname changes. Repository documentation is
-excluded on every host.
+`.chezmoiignore` excludes Hyprland and Noctalia unless the local profile selects
+the `hyprland` desktop on Linux. It excludes the ASUS Duo and ScreenPad helpers
+unless the hostname is `asus-duo`. Rename that value if the laptop hostname
+changes. Repository documentation is excluded on every host.
