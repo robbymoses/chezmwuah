@@ -43,6 +43,19 @@ end = [
     "session",
 ]
 
+# DP-2 does not expose a brightness backend, so omit its empty widget slot.
+[bar.main.monitor.dp2]
+match = "DP-2"
+end = [
+    "network",
+    "_pipe",
+    "battery",
+    "_pipe",
+    "control-center",
+    "notifications",
+    "session",
+]
+
 [widget.audio_visualizer]
 scale = 0.75
 show_when_idle = true
