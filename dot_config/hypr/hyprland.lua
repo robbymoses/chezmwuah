@@ -52,10 +52,41 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_THEME", "Catppuccin-mocha-sapphire")
-hl.env("XCURSOR_THEME", "Catppuccin-mocha-sapphire")
+-- Bibata is installed system-wide by the NixOS configuration.  Set both
+-- formats so GTK, XWayland, and native Wayland clients use the same cursor.
+local cursorTheme = "Bibata-Modern-Ice"
+local cursorSize = "32"
+hl.env("XCURSOR_SIZE", cursorSize)
+hl.env("HYPRCURSOR_SIZE", cursorSize)
+hl.env("HYPRCURSOR_THEME", cursorTheme)
+hl.env("XCURSOR_THEME", cursorTheme)
+
+-- NixOS supplies the plugin path. Keep its other motion effects disabled and
+-- only enlarge the cursor when it is shaken to locate it.
+local dynamicCursorsPlugin = os.getenv("HYPR_DYNAMIC_CURSORS_PLUGIN")
+if dynamicCursorsPlugin then
+  hl.plugin.load(dynamicCursorsPlugin)
+end
+
+if hl.plugin.dynamic_cursors then
+  hl.config({
+    plugin = {
+      dynamic_cursors = {
+        mode = "none",
+        shake = {
+          enabled = true,
+          threshold = 6.0,
+          base = 3.0,
+          speed = 0.0,
+          influence = 0.0,
+          limit = 3.0,
+          timeout = 1200,
+          effects = false,
+        },
+      },
+    },
+  })
+end
 
 -----------------------
 ----- PERMISSIONS -----
