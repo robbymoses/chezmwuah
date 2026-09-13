@@ -43,9 +43,10 @@ end = [
     "session",
 ]
 
-# DP-2 does not expose a brightness backend, so omit its empty widget slot.
-[bar.main.monitor.dp2]
-match = "DP-2"
+# This monitor has no brightness backend. Match its EDID serial rather than the
+# transient DP-* connector name assigned by Hyprland after a reconnect.
+[bar.main.monitor.external]
+match = "HCNY401175"
 end = [
     "network",
     "_pipe",
