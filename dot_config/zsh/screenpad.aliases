@@ -2,10 +2,10 @@
 # Screen management aliases
 
 # Disable ScreenPad Plus (eDP-2)
-alias disable-screepad="hyprctl keyword monitor eDP-2,disable"
+alias disable-screenpad="hyprctl eval 'hl.monitor({ output = \"eDP-2\", disabled = true })'"
 
-# Enable ScreenPad Plus (eDP-2) 
-alias enable-screepad="hyprctl keyword monitor eDP-2,enable"
+# Enable ScreenPad Plus (eDP-2) using the Lua config provider
+alias enable-screenpad="set-screenpad-position below"
 
 # List all monitors with status
 alias list-monitors="hyprctl monitors"

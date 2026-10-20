@@ -1,0 +1,2 @@
+# Nix package helpers.
+alias nix-search='nix search nixpkgs'

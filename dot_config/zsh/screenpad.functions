@@ -2,35 +2,40 @@
 # Screen management functions
 
 # Toggle ScreenPad Plus status
-toggle-screepad() {
-  local status=$(hyprctl monitors | grep -A 5 "eDP-2" | grep "disabled")
-  if [[ -n "$status" ]]; then
-    echo "Enabling ScreenPad Plus..."
-    hyprctl keyword monitor eDP-2,enable
-  else
+toggle-screenpad() {
+  local monitors
+  monitors=$(hyprctl monitors) || return
+  if [[ "$monitors" == *"Monitor eDP-2 ("* ]]; then
     echo "Disabling ScreenPad Plus..."
-    hyprctl keyword monitor eDP-2,disable
+    disable-screenpad
+  else
+    echo "Enabling ScreenPad Plus..."
+    enable-screenpad
   fi
 }
 
 # Set ScreenPad Plus position (relative to main screen)
-# Usage: set-screepad-position below|above|left|right
-set-screepad-position() {
+# Usage: set-screenpad-position below|above|left|right
+set-screenpad-position() {
+  local position
   case "$1" in
     below)
-      hyprctl keyword monitor eDP-2,auto,1,transform,0
+      position=auto-down
       ;;
     above)
-      hyprctl keyword monitor eDP-2,auto,1,transform,3
+      position=auto-up
       ;;
     left)
-      hyprctl keyword monitor eDP-2,auto,1,transform,1
+      position=auto-left
       ;;
     right)
-      hyprctl keyword monitor eDP-2,auto,1,transform,2
+      position=auto-right
       ;;
     *)
-      echo "Usage: set-screepad-position below|above|left|right"
+      echo "Usage: set-screenpad-position below|above|left|right" >&2
+      return 1
       ;;
   esac
+
+  hyprctl eval "hl.monitor({ output = \"eDP-2\", mode = \"preferred\", position = \"$position\", scale = \"auto\", transform = 0, disabled = false })"
 }

@@ -19,6 +19,7 @@ only when installed.
 | --- | --- | --- |
 | `common.aliases` | every host | `..`, `...`, `....` directory navigation |
 | `chezmoi.aliases` | every host | `chzm` to enter the source checkout; `chzm-a` to apply chezmoi |
+| `nix.aliases` | every host | `nix-search` to search packages in `nixpkgs` |
 | `nix.functions` | every host | `rebuild`, which validates and switches the NixOS flake containing the current directory |
 | `asus-duo.aliases` / `asus-duo.functions` | hostname `asus-duo` | NixOS rebuild and client-container helpers |
 | `screenpad.aliases` / `screenpad.functions` | hostname `asus-duo` | enable, disable, inspect, toggle, and position the `eDP-2` ScreenPad |
@@ -29,3 +30,10 @@ contains untracked files needed by the flake.
 
 The host-specific helper files are excluded on other hosts by
 [`.chezmoiignore`](../../.chezmoiignore).
+
+Use `enable-screenpad` to enable `eDP-2` below `eDP-1`, matching the ASUS Duo's
+vertical stack. Preferred resolution and automatic scaling are preserved.
+`disable-screenpad` turns it off, and `toggle-screenpad` uses the same layout
+when turning it back on. These commands replace the misspelled `screepad` names.
+`set-screenpad-position below|above|left|right` moves the ScreenPad without
+rotating it; `below` is the default used by `enable-screenpad`.

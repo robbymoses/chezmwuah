@@ -3,6 +3,8 @@
 `hyprland.lua` maps to `~/.config/hypr/hyprland.lua` and is installed only on
 Linux. It uses the dwindle layout, starts Noctalia, configures `eDP-1` as the
 primary display, and leaves the ASUS Duo `eDP-2` ScreenPad disabled by default.
+`eDP-1` is anchored at `0x0`; `enable-screenpad` places `eDP-2` below it with
+automatic scaling to match the physical vertical stack.
 The ScreenPad helpers are described in the [Zsh documentation](../zsh/README.md).
 The Noctalia bar configuration is documented in
 [its own directory](../noctalia/README.md).

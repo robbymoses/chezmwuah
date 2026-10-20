@@ -7,15 +7,16 @@
 hl.monitor({
     output   = "eDP-1",
     mode     = "preferred",
-    position = "auto",
+    position = "0x0",
     scale    = "auto",
 })
 
 -- ASUS Duo ScreenPad Plus (eDP-2) - disabled by default
--- Enable with shell command: enable-screepad
+-- Enable below eDP-1 with shell command: enable-screenpad
 hl.monitor({
     output   = "eDP-2",
     mode     = "preferred",
+    position = "auto-down",
     scale    = "auto",
     disabled = true,  -- Disabled by default
 })
