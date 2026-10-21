@@ -29,5 +29,10 @@ to suit the machine.
 | `Super + left/right mouse drag` | move / resize a window |
 | media, volume, and brightness keys | control playback, PipeWire volume, and display brightness |
 
+All `Super` desktop bindings take precedence over application shortcut inhibitors
+and input capture, including remote desktop sessions. Matching combinations stay
+local, so `Super + C` closes the local focused window and `Super + 0–9` switches
+local workspaces.
+
 Three-finger horizontal swipes change workspaces. Restart Hyprland after
 changing settings that do not apply dynamically, notably permissions.
