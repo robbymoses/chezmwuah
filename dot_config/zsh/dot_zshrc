@@ -35,6 +35,7 @@ for func_file in "$ZDOTDIR"/*.functions(N); do
   source "$func_file"
 done
 
+[[ -r "$HOME/conf.d/client-machines/vm-env.sh" ]] && source "$HOME/conf.d/client-machines/vm-env.sh"
 # Plugins and prompt are optional so a fresh machine still gets a usable shell.
 if [[ -r "$ZDOTDIR/lib/antidote.zsh" ]]; then
   source "$ZDOTDIR/lib/antidote.zsh"
